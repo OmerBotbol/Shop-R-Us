@@ -1,32 +1,38 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/HomeScreen';
-import ProductScreen from './src/ProductScreen';
-import addButton from './src/addButton';
 import CartContext from './src/CartContext';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeStack from './src/HomeStack';
+import CartStack from './src/CartStack';
+import { FontAwesome } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { colors } from './src/colors';
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <CartContext>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="home">
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="home"
-            component={HomeScreen}
-          />
-          <Stack.Screen
-            name="product"
-            options={({ route }) => ({
-              headerTitle: route.params.name,
-              headerRight: () => addButton(route.params.name),
-            })}
-            component={ProductScreen}
-          />
-        </Stack.Navigator>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            activeTintColor: colors.darkBlue,
+            inactiveTintColor: colors.lightGray,
+            headerShown: false,
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === 'Feed') {
+                iconName = 'list';
+              } else {
+                iconName = 'shopping-cart';
+              }
+              return <FontAwesome name={iconName} size={size} color={color} />;
+            },
+          })}
+        >
+          <Tab.Screen name="Feed" component={HomeStack} />
+          <Tab.Screen name="Cart" component={CartStack} />
+        </Tab.Navigator>
       </NavigationContainer>
     </CartContext>
   );

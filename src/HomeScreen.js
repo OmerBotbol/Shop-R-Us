@@ -13,15 +13,15 @@ import {
 import { colors } from './colors';
 
 const allItems = [
-  'book',
-  'shirt',
-  'table',
-  'computer',
-  'chair',
-  'blanket',
-  'dog',
-  'xbox',
-  'cake',
+  { name: 'book', price: 7 },
+  { name: 'shirt', price: 5 },
+  { name: 'computer', price: 20 },
+  { name: 'chair', price: 4 },
+  { name: 'blanket', price: 3 },
+  { name: 'xbox', price: 27 },
+  { name: 'dog', price: 30 },
+  { name: 'cake', price: 3 },
+  { name: 'table', price: 4 },
 ];
 
 function HomeScreen({ navigation }) {
@@ -53,14 +53,17 @@ function HomeScreen({ navigation }) {
       <FlatList
         data={items}
         style={styles.itemList}
-        renderItem={({ item, index }) => (
+        keyExtractor={(item, idx) => item + idx}
+        renderItem={({ item }) => (
           <TouchableOpacity
-            keyExtractor={index}
-            onPress={() => navigation.navigate('product', { name: item })}
+            onPress={() =>
+              navigation.navigate('product', {
+                name: item.name,
+                price: item.price,
+              })
+            }
           >
-            <Text keyExtractor={index} style={styles.item}>
-              {item}
-            </Text>
+            <Text style={styles.item}>{item.name}</Text>
           </TouchableOpacity>
         )}
       />

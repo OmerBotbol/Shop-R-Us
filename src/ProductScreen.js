@@ -1,18 +1,15 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { myContext } from './CartContext';
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from './colors';
 
 function ProductScreen({ route }) {
-  const { cart } = useContext(myContext);
   return (
-    <View style={styles.container}>
-      <Text>this it the product {route.params.name}</Text>
+    <SafeAreaView style={styles.container}>
       <Text>
-        your cart is:{' '}
-        {cart.map((item) => `${item.quantity}x ${item.name}`).join()}
+        {route.params.name}: {route.params.price}$
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({

@@ -7,13 +7,17 @@ function CartContext({ children }) {
 
   const addToCart = (newItem) => {
     const index = cart.findIndex((item) => {
-      return item.name === newItem;
+      return item.name === newItem.name;
     });
     if (index === -1) {
-      return setCart([...cart, { name: newItem, quantity: 1 }]);
+      return setCart([
+        ...cart,
+        { name: newItem.name, quantity: 1, price: newItem.price },
+      ]);
     }
     const cartCopy = [...cart];
     cartCopy[index].quantity += 1;
+    cartCopy[index].price += newItem.price;
     return setCart(cartCopy);
   };
 
