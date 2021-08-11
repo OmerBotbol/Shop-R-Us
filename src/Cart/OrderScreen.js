@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from './colors';
-import { myContext } from './CartContext';
+import { colors } from '../colors';
+import { myContext } from '../CartContext';
 
 function OrderScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');

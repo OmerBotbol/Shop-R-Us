@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from './colors';
+import { colors } from '../colors';
 
 function ProductScreen({ route }) {
   return (

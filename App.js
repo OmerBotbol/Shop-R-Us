@@ -1,8 +1,8 @@
 import React from 'react';
 import CartContext from './src/CartContext';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeStack from './src/HomeStack';
-import CartStack from './src/CartStack';
+import HomeStack from './src/Feed/HomeStack';
+import CartStack from './src/Cart/CartStack';
 import { FontAwesome } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { colors } from './src/colors';

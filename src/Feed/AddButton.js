@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Alert, Text, TouchableOpacity } from 'react-native';
-import { myContext } from './CartContext';
+import { myContext } from '../CartContext';
 
 function AddButton(item, price, navigation) {
   const { add } = useContext(myContext);
