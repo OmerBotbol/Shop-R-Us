@@ -1,10 +1,20 @@
 import React, { useContext } from 'react';
 import { Alert, Text, TouchableOpacity } from 'react-native';
-import { myContext } from '../CartContext';
+import { myCartContext } from '../CartContext';
+import { myUserContext } from '../userContext';
 
 function DoneButton(navigation) {
-  const { deleteAll } = useContext(myContext);
+  const { deleteAll } = useContext(myCartContext);
+  const { user } = useContext(myUserContext);
   const handlePress = () => {
+    if (Object.keys(user).length !== 6) {
+      return Alert.alert(
+        'Ops',
+        'Please fill all the sections before submitting',
+        ['ok']
+      );
+    }
+    console.log(user);
     deleteAll();
     Alert.alert(
       'Your Order Has Received!',

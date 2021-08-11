@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { myContext } from '../CartContext';
+import { myCartContext } from '../CartContext';
 import { colors } from '../colors';
 
 function CartScreen({ navigation }) {
-  const { cart, deleteOne } = useContext(myContext);
+  const { cart, deleteOne } = useContext(myCartContext);
 
   const handleOrder = () => {
     if (cart.length === 0) {

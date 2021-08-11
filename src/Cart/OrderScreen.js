@@ -2,16 +2,18 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../colors';
-import { myContext } from '../CartContext';
+import { myCartContext } from '../CartContext';
+import { myUserContext } from '../userContext';
 
-function OrderScreen({ navigation }) {
+function OrderScreen() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const { cart } = useContext(myContext);
+  const { cart } = useContext(myCartContext);
+  const { updateUser } = useContext(myUserContext);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,7 +22,10 @@ function OrderScreen({ navigation }) {
         <TextInput
           style={styles.input}
           value={firstName}
-          onChangeText={setFirstName}
+          onChangeText={(e) => {
+            setFirstName(e);
+            updateUser('firstName', e);
+          }}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -28,7 +33,10 @@ function OrderScreen({ navigation }) {
         <TextInput
           style={styles.input}
           value={lastName}
-          onChangeText={setLastName}
+          onChangeText={(e) => {
+            setLastName(e);
+            updateUser('lastName', e);
+          }}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -36,19 +44,32 @@ function OrderScreen({ navigation }) {
         <TextInput
           style={styles.input}
           value={country}
-          onChangeText={setCountry}
+          onChangeText={(e) => {
+            setCountry(e);
+            updateUser('country', e);
+          }}
         />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>City </Text>
-        <TextInput style={styles.input} value={city} onChangeText={setCity} />
+        <TextInput
+          style={styles.input}
+          value={city}
+          onChangeText={(e) => {
+            setCity(e);
+            updateUser('city', e);
+          }}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Address: </Text>
         <TextInput
           style={styles.input}
           value={address}
-          onChangeText={setAddress}
+          onChangeText={(e) => {
+            setAddress(e);
+            updateUser('address', e);
+          }}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -56,7 +77,11 @@ function OrderScreen({ navigation }) {
         <TextInput
           style={styles.input}
           value={phoneNumber}
-          onChangeText={setPhoneNumber}
+          keyboardType="number-pad"
+          onChangeText={(e) => {
+            setPhoneNumber(e);
+            updateUser('phoneNumber', e);
+          }}
         />
       </View>
       <Text style={styles.totalPrice}>

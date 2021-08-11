@@ -30,7 +30,7 @@ function HomeScreen({ navigation }) {
 
   const handlePress = () => {
     const re = new RegExp(searchInput, 'g');
-    const newItemsArr = allItems.filter((item) => item.match(re));
+    const newItemsArr = allItems.filter((item) => item.name.match(re));
     setItems(newItemsArr);
   };
 
