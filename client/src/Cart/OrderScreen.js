@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../colors';
 import { myCartContext } from '../CartContext';
-import { myUserContext } from '../userContext';
+import { myUserContext } from '../UserContext';
 
 function OrderScreen() {
   const [firstName, setFirstName] = useState('');

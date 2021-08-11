@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,26 +13,19 @@ import {
 
 import { colors } from '../colors';
 
-const allItems = [
-  { name: 'book', price: 7 },
-  { name: 'shirt', price: 5 },
-  { name: 'computer', price: 20 },
-  { name: 'chair', price: 4 },
-  { name: 'blanket', price: 3 },
-  { name: 'xbox', price: 27 },
-  { name: 'dog', price: 30 },
-  { name: 'cake', price: 3 },
-  { name: 'table', price: 4 },
-];
-
 function HomeScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState('');
-  const [items, setItems] = useState(allItems);
+  const [items, setItems] = useState([]);
 
   const handlePress = () => {
-    const re = new RegExp(searchInput, 'g');
-    const newItemsArr = allItems.filter((item) => item.name.match(re));
-    setItems(newItemsArr);
+    axios
+      .get(`http://10.0.2.2:8080/api/item?key=name&value=${searchInput}`)
+      .then((result) => {
+        setItems(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -58,8 +52,8 @@ function HomeScreen({ navigation }) {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('product', {
+                id: item._id,
                 name: item.name,
-                price: item.price,
               })
             }
           >

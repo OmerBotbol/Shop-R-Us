@@ -6,7 +6,7 @@ import CartStack from './src/Cart/CartStack';
 import { FontAwesome } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { colors } from './src/colors';
-import UserContext from './src/userContext';
+import UserContext from './src/UserContext';
 
 const Tab = createBottomTabNavigator();
 
