@@ -3,7 +3,6 @@ import axios from 'axios';
 import {
   SafeAreaView,
   StyleSheet,
-  Button,
   TextInput,
   View,
   Text,
@@ -12,6 +11,7 @@ import {
 } from 'react-native';
 
 import { colors } from '../colors';
+import Btn from '../Btn';
 
 function HomeScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState('');
@@ -37,12 +37,7 @@ function HomeScreen({ navigation }) {
           onChangeText={setSearchInput}
           placeholder="I'm looking for..."
         />
-        <Button
-          title="SEARCH"
-          color={colors.darkBlue}
-          style={styles.searchButton}
-          onPress={() => handlePress()}
-        />
+        <Btn onPress={() => handlePress()}>search</Btn>
       </View>
       <FlatList
         data={items}
@@ -54,6 +49,7 @@ function HomeScreen({ navigation }) {
               navigation.navigate('product', {
                 id: item._id,
                 name: item.name,
+                price: item.price,
               })
             }
           >
@@ -91,11 +87,6 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: 'white',
   },
-  searchButton: {
-    flex: 0.2,
-    paddingTop: 8,
-  },
-
   item: {
     flex: 1,
     justifyContent: 'flex-end',

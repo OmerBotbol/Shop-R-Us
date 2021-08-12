@@ -2,6 +2,8 @@ import React, { createContext, useState } from 'react';
 
 export const myCartContext = createContext({
   cart: [],
+  quantity: 1,
+  setQuantity: () => {},
   add: () => {},
   deleteOne: () => {},
   deleteAll: () => {},
@@ -9,20 +11,25 @@ export const myCartContext = createContext({
 
 function CartContext({ children }) {
   const [cart, setCart] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
-  const addToCart = (newItem) => {
+  const addToCart = (newItem, quantity) => {
     const index = cart.findIndex((item) => {
       return item.name === newItem.name;
     });
     if (index === -1) {
       return setCart([
         ...cart,
-        { name: newItem.name, quantity: 1, price: newItem.price },
+        {
+          name: newItem.name,
+          quantity: quantity,
+          price: newItem.price * quantity,
+        },
       ]);
     }
     const cartCopy = [...cart];
-    cartCopy[index].quantity += 1;
-    cartCopy[index].price += newItem.price;
+    cartCopy[index].quantity += quantity;
+    cartCopy[index].price += newItem.price * quantity;
     return setCart(cartCopy);
   };
 
@@ -45,7 +52,9 @@ function CartContext({ children }) {
     <myCartContext.Provider
       value={{
         cart: cart,
-        add: (item) => addToCart(item),
+        quantity: quantity,
+        setQuantity: (number) => setQuantity(number),
+        add: (item, number) => addToCart(item, number),
         deleteOne: (item) => deleteOneItem(item),
         deleteAll: () => setCart([]),
       }}

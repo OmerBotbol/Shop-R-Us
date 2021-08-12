@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,20 +7,21 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { myCartContext } from '../CartContext';
 import { colors } from '../colors';
 
 function ProductScreen({ route }) {
   const [itemData, setItemData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+  const { quantity, setQuantity } = useContext(myCartContext);
   useEffect(() => {
     axios
       .get(`http://10.0.2.2:8080/api/item?key=id&value=${route.params.id}`)
       .then((result) => {
         setItemData(result.data[0]);
+        setQuantity(1);
         setLoading(false);
       })
       .catch((e) => {
@@ -38,7 +39,9 @@ function ProductScreen({ route }) {
           <Image source={{ uri: itemData.imageUrl }} style={styles.image} />
           <Text style={styles.description}>{itemData.description}</Text>
           <View style={styles.numberOfItems}>
-            <TouchableOpacity onPress={() => setQuantity((prev) => prev - 1)}>
+            <TouchableOpacity
+              onPress={() => quantity > 1 && setQuantity((prev) => prev - 1)}
+            >
               <Text style={styles.changeButton}>-</Text>
             </TouchableOpacity>
             <Text style={styles.quantity}>{quantity}</Text>
@@ -46,6 +49,7 @@ function ProductScreen({ route }) {
               <Text style={styles.changeButton}>+</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.price}>Price: {itemData.price * quantity}$</Text>
         </View>
       )}
     </SafeAreaView>
@@ -57,9 +61,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   productData: {
-    flex: 1,
+    flex: 2,
     width: '100%',
-    borderWidth: 1,
     alignItems: 'center',
   },
   header: {
@@ -81,23 +84,30 @@ const styles = StyleSheet.create({
   },
   quantity: {
     width: 30,
-    backgroundColor: 'white',
     height: 30,
     fontSize: 20,
     textAlign: 'center',
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 15,
+    marginRight: 15,
   },
   changeButton: {
     fontSize: 20,
     borderWidth: 1,
     borderRadius: 50,
+    borderColor: colors.darkGray,
     width: 30,
     height: 30,
     textAlign: 'center',
-    padding: 0,
-    backgroundColor: colors.darkGray,
+    backgroundColor: colors.lightGray,
     color: 'white',
+    elevation: 8,
+  },
+  price: {
+    flex: 1,
+    alignItems: 'flex-start',
+    fontSize: 25,
+    width: '100%',
+    paddingLeft: 10,
   },
 });
 

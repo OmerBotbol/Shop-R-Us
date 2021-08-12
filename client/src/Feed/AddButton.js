@@ -3,13 +3,17 @@ import { Alert, Text, TouchableOpacity } from 'react-native';
 import { myCartContext } from '../CartContext';
 
 function AddButton(item, price, navigation) {
-  const { add } = useContext(myCartContext);
+  const { add, quantity } = useContext(myCartContext);
   const handlePress = (itemToAdd) => {
-    add(itemToAdd);
-    Alert.alert('Added successfully', `you added 1 ${item} to your cart`, [
-      { text: 'go homepage', onPress: () => navigation.goBack() },
-      { text: 'go cart', onPress: () => navigation.navigate('Cart') },
-    ]);
+    add(itemToAdd, quantity);
+    Alert.alert(
+      'Added successfully',
+      `you added ${quantity} ${item} to your cart`,
+      [
+        { text: 'go homepage', onPress: () => navigation.goBack() },
+        { text: 'go cart', onPress: () => navigation.navigate('Cart') },
+      ]
+    );
   };
 
   return (

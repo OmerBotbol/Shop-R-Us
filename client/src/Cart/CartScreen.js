@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Btn from '../Btn';
 import { myCartContext } from '../CartContext';
 import { colors } from '../colors';
 
@@ -25,12 +26,17 @@ function CartScreen({ navigation }) {
           data={cart}
           style={styles.cartList}
           keyExtractor={(item, idx) => item + idx}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
           renderItem={({ item }) => (
-            <View>
+            <View style={styles.item}>
               <Text
                 style={styles.cartListItem}
               >{`${item.quantity}x ${item.name} - ${item.price}$`}</Text>
-              <Button title="DELETE" onPress={() => deleteOne(item)} />
+              <View style={styles.buttonContainer}>
+                <Btn onPress={() => deleteOne(item)}>REMOVE</Btn>
+              </View>
             </View>
           )}
         />
@@ -40,11 +46,7 @@ function CartScreen({ navigation }) {
           return initial + item.price;
         }, 0)}$`}
       </Text>
-      <Button
-        title="Order"
-        color={colors.darkBlue}
-        onPress={() => handleOrder()}
-      />
+      <Btn onPress={() => handleOrder()}>Order</Btn>
     </SafeAreaView>
   );
 }
@@ -62,9 +64,29 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 25,
   },
+  cartList: {
+    marginTop: 20,
+    flexDirection: 'column',
+    height: 300,
+  },
   cartListItem: {
     fontSize: 25,
     textAlign: 'center',
+    width: 250,
+  },
+  item: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   totalPrice: {
     fontSize: 25,
