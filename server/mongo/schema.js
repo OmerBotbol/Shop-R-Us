@@ -20,7 +20,20 @@ const orderSchema = new mongoose.Schema({
   paid: Boolean,
 });
 
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: String,
+  password: String,
+  country: String,
+  city: String,
+  address: String,
+  phoneNumber: String,
+  isAdmin: Boolean,
+});
+
 const Item = mongoose.model('Item', itemSchema);
 const Order = mongoose.model('Order', orderSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = { Item, Order };
+module.exports = { Item, Order, User };
