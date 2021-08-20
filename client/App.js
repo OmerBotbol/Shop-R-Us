@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
-import UserContext from './src/General/UserContext';
+import React, { useState } from 'react';
 import AuthStack from './src/Auth/AuthStack';
 import { myUserContext } from './src/General/UserContext';
 import UserTabs from './src/User/UserTabs';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
-  const { user } = useContext(myUserContext);
-  console.log(user);
+  const [user, setUser] = useState();
+
   return (
-    <UserContext>
-      {Object.keys(user).length ? <UserTabs /> : <AuthStack />}
-    </UserContext>
+    <myUserContext.Provider value={{ user, setUser }}>
+      <NavigationContainer>
+        {user ? <UserTabs /> : <AuthStack />}
+      </NavigationContainer>
+    </myUserContext.Provider>
   );
 }

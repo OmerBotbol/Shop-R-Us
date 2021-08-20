@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 function CartStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="My Cart">
       <Stack.Screen name="My Cart" component={CartScreen} />
       <Stack.Screen
         name="My Order"

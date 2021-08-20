@@ -59,6 +59,8 @@ const login = async (req, res) => {
   const userData = await User.findOne({ email: email }, null, { lean: true });
   if (!userData) return res.status(404).json({ error: "User doesn't exists" });
   const isUserPasswordCorrect = bcrypt.compareSync(password, userData.password);
+  console.log(password);
+  console.log(isUserPasswordCorrect);
   if (!isUserPasswordCorrect)
     return res.status(403).json({ error: 'Incorrect password' });
   const dataToSend = { ...userData };

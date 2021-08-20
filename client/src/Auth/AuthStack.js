@@ -1,11 +1,20 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './LoginScreen';
+import RegisterScreen from './RegisterScreen';
+
+const Stack = createNativeStackNavigator();
 
 function AuthStack() {
   return (
-    <SafeAreaView>
-      <Text>this is the auth stack</Text>
-    </SafeAreaView>
+    <Stack.Navigator initialRouteName="login">
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="login"
+        component={LoginScreen}
+      />
+      <Stack.Screen name="register" component={RegisterScreen} />
+    </Stack.Navigator>
   );
 }
 
