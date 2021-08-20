@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { colors } from '../../General/colors';
-import Btn from '../../General/CustomButton';
+import CustomButton from '../../General/CustomButton';
 import DismissKeyboard from '../../General/DismissKeyboard';
 
 function HomeScreen({ navigation }) {
@@ -42,7 +42,7 @@ function HomeScreen({ navigation }) {
             placeholder="I'm looking for..."
           />
         </DismissKeyboard>
-        <Btn onPress={() => handlePress()}>search</Btn>
+        <CustomButton onPress={() => handlePress()}>search</CustomButton>
       </View>
       <FlatList
         data={items}

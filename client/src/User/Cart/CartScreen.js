@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Btn from '../Btn';
+import CustomButton from '../../General/CustomButton';
 import { myCartContext } from '../CartContext';
-import { colors } from '../colors';
+import { colors } from '../../General/colors';
 
 function CartScreen({ navigation }) {
   const { cart, deleteOne } = useContext(myCartContext);
@@ -35,7 +35,9 @@ function CartScreen({ navigation }) {
                 style={styles.cartListItem}
               >{`${item.quantity}x ${item.name} - ${item.price}$`}</Text>
               <View style={styles.buttonContainer}>
-                <Btn onPress={() => deleteOne(item)}>REMOVE</Btn>
+                <CustomButton onPress={() => deleteOne(item)}>
+                  REMOVE
+                </CustomButton>
               </View>
             </View>
           )}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import { Alert, Text, TouchableOpacity } from 'react-native';
 import { myCartContext } from '../CartContext';
-import { myUserContext } from '../UserContext';
+import { myUserContext } from '../../General/UserContext';
 
 function DoneButton(navigation) {
   const { cart, deleteAll } = useContext(myCartContext);

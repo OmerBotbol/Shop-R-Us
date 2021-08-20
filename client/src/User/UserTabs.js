@@ -1,7 +1,7 @@
 import React from 'react';
 import CartContext from './CartContext';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeStack from '../Feed/HomeStack';
+import HomeStack from './Feed/HomeStack';
 import CartStack from './Cart/CartStack';
 import { FontAwesome } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';

@@ -1,10 +1,15 @@
 import React, { useContext } from 'react';
-import UserContext from '../General/UserContext';
+import UserContext from './src/General/UserContext';
 import AuthStack from './src/Auth/AuthStack';
 import { myUserContext } from './src/General/UserContext';
 import UserTabs from './src/User/UserTabs';
 
 export default function App() {
   const { user } = useContext(myUserContext);
-  return <UserContext>{user ? <UserTabs /> : <AuthStack />}</UserContext>;
+  console.log(user);
+  return (
+    <UserContext>
+      {Object.keys(user).length ? <UserTabs /> : <AuthStack />}
+    </UserContext>
+  );
 }
