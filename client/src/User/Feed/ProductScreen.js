@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { myCartContext } from '../CartContext';
-import { colors } from '../colors';
+import { colors } from '../../General/colors';
 
 function ProductScreen({ route }) {
   const [itemData, setItemData] = useState({});

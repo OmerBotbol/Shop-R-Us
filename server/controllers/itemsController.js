@@ -1,5 +1,4 @@
 const { Item } = require('../mongo/schema');
-const ObjectId = require('mongoose').Types.ObjectId;
 
 const postItem = (req, res) => {
   const newItem = new Item({

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors } from './colors';
 
-function Btn({ children, onPress, textStyle, containerStyle }) {
+function CustomButton({ children, onPress, textStyle, containerStyle }) {
   return (
     <TouchableOpacity
       style={{ ...styles.container, ...containerStyle }}
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Btn;
+export default CustomButton;

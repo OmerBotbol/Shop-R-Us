@@ -8,10 +8,12 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 
-import { colors } from '../colors';
-import Btn from '../Btn';
+import { colors } from '../../General/colors';
+import Btn from '../../General/CustomButton';
+import DismissKeyboard from '../../General/DismissKeyboard';
 
 function HomeScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState('');
@@ -22,6 +24,7 @@ function HomeScreen({ navigation }) {
       .get(`http://10.0.2.2:8080/api/item?key=name&value=${searchInput}`)
       .then((result) => {
         setItems(result.data);
+        Keyboard.dismiss();
       })
       .catch((err) => {
         console.log(err);
@@ -31,12 +34,14 @@ function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.searchBox}>
-        <TextInput
-          style={styles.searchInput}
-          value={searchInput}
-          onChangeText={setSearchInput}
-          placeholder="I'm looking for..."
-        />
+        <DismissKeyboard>
+          <TextInput
+            style={styles.searchInput}
+            value={searchInput}
+            onChangeText={setSearchInput}
+            placeholder="I'm looking for..."
+          />
+        </DismissKeyboard>
         <Btn onPress={() => handlePress()}>search</Btn>
       </View>
       <FlatList

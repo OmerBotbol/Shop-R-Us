@@ -3,7 +3,10 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 function DismissKeyboard({ children }) {
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback
+      accessible={false}
+      onPress={() => Keyboard.dismiss()}
+    >
       {children}
     </TouchableWithoutFeedback>
   );
