@@ -18,8 +18,7 @@ function HomeStack() {
         name="product"
         options={({ navigation, route }) => ({
           headerTitle: route.params.name,
-          headerRight: () =>
-            AddButton(route.params.name, route.params.price, navigation),
+          headerRight: () => AddButton(route.params.id, navigation),
         })}
         component={ProductScreen}
       />

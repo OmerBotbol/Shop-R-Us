@@ -14,38 +14,21 @@ function CartContext({ children }) {
   const [quantity, setQuantity] = useState(1);
 
   const addToCart = (newItem, quantity) => {
-    const index = cart.findIndex((item) => {
-      return item.name === newItem.name;
-    });
-    if (index === -1) {
-      return setCart([
-        ...cart,
-        {
-          name: newItem.name,
-          quantity: quantity,
-          price: newItem.price * quantity,
-        },
-      ]);
+    const itemsToAddToCart = [];
+    for (let i = 0; i < quantity; i++) {
+      itemsToAddToCart.push(newItem);
     }
-    const cartCopy = [...cart];
-    cartCopy[index].quantity += quantity;
-    cartCopy[index].price += newItem.price * quantity;
-    return setCart(cartCopy);
+    setCart((prev) => [...prev, ...itemsToAddToCart]);
   };
 
   const deleteOneItem = (itemToDelete) => {
     const index = cart.findIndex((item) => {
-      return item.name === itemToDelete.name;
+      return item._id === itemToDelete._id;
     });
 
     const cartCopy = [...cart];
-    const itemOriginalPrice = cartCopy[index].price / cartCopy[index].quantity;
-    cartCopy[index].quantity -= 1;
-    cartCopy[index].price -= itemOriginalPrice;
-    if (cartCopy[index].quantity === 0) {
-      cartCopy.splice(index, 1);
-    }
-    return setCart(cartCopy);
+    cartCopy.splice(index, 1);
+    setCart(cartCopy);
   };
 
   return (

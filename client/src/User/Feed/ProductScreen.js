@@ -11,12 +11,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
+import { myUserContext } from '../../General/UserContext';
 
 function ProductScreen({ route }) {
   const [itemData, setItemData] = useState({});
   const [loading, setLoading] = useState(true);
   const { quantity, setQuantity } = useContext(myCartContext);
+  const { user } = useContext(myUserContext);
   useEffect(() => {
+    console.log(user);
     axios
       .get(`http://10.0.2.2:8080/api/item?key=id&value=${route.params.id}`)
       .then((result) => {

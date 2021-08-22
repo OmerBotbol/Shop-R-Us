@@ -9,12 +9,8 @@ const itemSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  country: String,
-  city: String,
-  address: String,
-  phoneNumber: String,
+  userId: String,
+  items: [itemSchema],
   totalPrice: Number,
   orderDate: Date,
   paid: Boolean,

@@ -1,16 +1,40 @@
-import React, { useContext } from 'react';
-import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../General/CustomButton';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
+import { myUserContext } from '../../General/UserContext';
 
 function CartScreen({ navigation }) {
   const { cart, deleteOne } = useContext(myCartContext);
+  const [cartDisplay, setCartDisplay] = useState([]);
+
+  useEffect(() => {
+    const newCart = cart?.reduce((filtered, item) => {
+      const index = filtered.findIndex(
+        (filteredItem) => filteredItem._id === item._id
+      );
+      if (index === -1) {
+        filtered.push({
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+        });
+        return filtered;
+      }
+      filtered[index].quantity += 1;
+      filtered[index].price += item.price;
+      return filtered;
+    }, []);
+
+    setCartDisplay(newCart);
+  }, [cart]);
 
   const handleOrder = () => {
     if (cart.length === 0) {
-      return Alert.alert('Ops!', 'Your cart is empty!', ['ok']);
+      return Alert.alert('Oops!', 'Your cart is empty!', ['ok']);
     }
     navigation.navigate('My Order');
   };
@@ -23,7 +47,7 @@ function CartScreen({ navigation }) {
         </View>
       ) : (
         <FlatList
-          data={cart}
+          data={cartDisplay}
           style={styles.cartList}
           keyExtractor={(item, idx) => item + idx}
           contentContainerStyle={{
@@ -33,7 +57,7 @@ function CartScreen({ navigation }) {
             <View style={styles.item}>
               <Text
                 style={styles.cartListItem}
-              >{`${item.quantity}x ${item.name} - ${item.price}$`}</Text>
+              >{`${item.quantity}X ${item.name} - ${item.price}$`}</Text>
               <View style={styles.buttonContainer}>
                 <CustomButton onPress={() => deleteOne(item)}>
                   REMOVE
@@ -48,7 +72,7 @@ function CartScreen({ navigation }) {
           return initial + item.price;
         }, 0)}$`}
       </Text>
-      <Btn onPress={() => handleOrder()}>Order</Btn>
+      <CustomButton onPress={() => handleOrder()}>Order</CustomButton>
     </SafeAreaView>
   );
 }

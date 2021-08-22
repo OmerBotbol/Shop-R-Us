@@ -38,51 +38,28 @@ export default function App() {
 
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
-  const authContext = useMemo(
-    () => ({
-      login: async (userData) => {
-        const id = userData[0];
-        const admin = userData[1];
-        const token = userData[2];
-        try {
-          await AsyncStorage.setItem('accessToken', token);
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({ type: 'LOGIN', id, admin, token });
-      },
-      logout: async () => {
-        try {
-          await AsyncStorage.removeItem('accessToken');
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({ action: 'LOGOUT' });
-      },
-    }),
-    []
-  );
+  const authContext = () => {
+    return;
+  };
 
   useEffect(() => {
     const getData = async () => {
       try {
         const userToken = await AsyncStorage.getItem('accessToken');
+        let userData = { data: { id: null, admin: null } };
         if (userToken) {
-          const userData = await axios.get(
-            'http://10.0.2.2:8080/api/user/data',
-            {
-              headers: {
-                authorization: 'Bearer ' + userToken,
-              },
-            }
-          );
-          dispatch({
-            type: 'LOGIN',
-            id: userData.data._id,
-            admin: userData.data.isAdmin,
-            token: userToken,
+          userData = await axios.get('http://10.0.2.2:8080/api/user/data', {
+            headers: {
+              authorization: 'Bearer ' + userToken,
+            },
           });
         }
+        dispatch({
+          type: 'LOGIN',
+          id: userData.data._id,
+          admin: userData.data.isAdmin,
+          token: userToken,
+        });
       } catch (e) {
         console.log(e);
       }
@@ -98,7 +75,30 @@ export default function App() {
     );
   }
   return (
-    <myUserContext.Provider value={authContext}>
+    <myUserContext.Provider
+      value={{
+        login: async (userData) => {
+          const id = userData[0];
+          const admin = userData[1];
+          const token = userData[2];
+          try {
+            await AsyncStorage.setItem('accessToken', token);
+          } catch (e) {
+            console.log(e);
+          }
+          dispatch({ type: 'LOGIN', id, admin, token });
+        },
+        logout: async () => {
+          try {
+            await AsyncStorage.removeItem('accessToken');
+          } catch (e) {
+            console.log(e);
+          }
+          dispatch({ type: 'LOGOUT' });
+        },
+        user: loginState,
+      }}
+    >
       <NavigationContainer>
         {loginState.userToken ? <UserTabs /> : <AuthStack />}
       </NavigationContainer>

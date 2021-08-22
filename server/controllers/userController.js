@@ -53,6 +53,16 @@ const login = async (req, res) => {
   res.send([dataToSend._id, dataToSend.isAdmin, token]);
 };
 
+const getUserById = async (req, res) => {
+  const { id } = req.query;
+  const userData = await User.findById(id, null, { lean: true });
+  if (!userData) return res.status(404).json({ error: "User doesn't exists" });
+  const dataToSend = { ...userData };
+  dataToSend.password = undefined;
+  dataToSend.__v = undefined;
+  res.send(dataToSend);
+};
+
 function validateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -67,4 +77,4 @@ function validateToken(req, res, next) {
   });
 }
 
-module.exports = { register, login, validateToken };
+module.exports = { register, login, validateToken, getUserById };

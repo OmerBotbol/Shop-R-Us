@@ -2,16 +2,14 @@ const { Order } = require('../mongo/schema');
 
 const createOrder = (req, res) => {
   const newOrder = new Order({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    country: req.body.country,
-    city: req.body.city,
-    address: req.body.address,
-    phoneNumber: req.body.phoneNumber,
+    userId: req.body.userId,
+    items: req.body.items,
     totalPrice: req.body.totalPrice,
     orderDate: new Date(),
     paid: true,
   });
+
+  console.log(req.body.items);
 
   newOrder
     .save()

@@ -1,88 +1,35 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../General/colors';
 import { myCartContext } from '../CartContext';
 import { myUserContext } from '../../General/UserContext';
+import axios from 'axios';
 
 function OrderScreen() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [country, setCountry] = useState('');
-  const [city, setCity] = useState('');
-  const [address, setAddress] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const { cart } = useContext(myCartContext);
-  const { updateUser } = useContext(myUserContext);
+  const { user } = useContext(myUserContext);
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`http://10.0.2.2:8080/api/user/?id=${user.userId}`, {
+        headers: {
+          authorization: 'Bearer ' + user.userToken,
+        },
+      })
+      .then((result) => {
+        setUserData(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>First Name: </Text>
-        <TextInput
-          style={styles.input}
-          value={firstName}
-          onChangeText={(e) => {
-            setFirstName(e);
-            updateUser('firstName', e);
-          }}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>last Name: </Text>
-        <TextInput
-          style={styles.input}
-          value={lastName}
-          onChangeText={(e) => {
-            setLastName(e);
-            updateUser('lastName', e);
-          }}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Country: </Text>
-        <TextInput
-          style={styles.input}
-          value={country}
-          onChangeText={(e) => {
-            setCountry(e);
-            updateUser('country', e);
-          }}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>City </Text>
-        <TextInput
-          style={styles.input}
-          value={city}
-          onChangeText={(e) => {
-            setCity(e);
-            updateUser('city', e);
-          }}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Address: </Text>
-        <TextInput
-          style={styles.input}
-          value={address}
-          onChangeText={(e) => {
-            setAddress(e);
-            updateUser('address', e);
-          }}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Phone Number: </Text>
-        <TextInput
-          style={styles.input}
-          value={phoneNumber}
-          keyboardType="number-pad"
-          onChangeText={(e) => {
-            setPhoneNumber(e);
-            updateUser('phoneNumber', e);
-          }}
-        />
+        <Text>{userData?.address}</Text>
       </View>
       <Text style={styles.totalPrice}>
         {`Total Price: ${cart.reduce((initial, item) => {

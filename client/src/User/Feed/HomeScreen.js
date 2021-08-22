@@ -54,7 +54,6 @@ function HomeScreen({ navigation }) {
               navigation.navigate('product', {
                 id: item._id,
                 name: item.name,
-                price: item.price,
               })
             }
           >
