@@ -1,13 +1,12 @@
 import axios from 'axios';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors } from '../General/colors';
 import CustomButton from '../General/CustomButton';
 import DismissKeyboard from '../General/DismissKeyboard';
-import { myUserContext } from '../General/UserContext';
 import { EvilIcons } from '@expo/vector-icons';
 
-function RegisterScreen() {
+function RegisterScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +19,6 @@ function RegisterScreen() {
   const [message, setMessage] = useState('');
   const [valid, setValid] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState('');
-  const { setUser } = useContext(myUserContext);
 
   useEffect(() => {
     const reg = '[a-zA-Z0-9]$';
@@ -51,9 +49,7 @@ function RegisterScreen() {
         axios
           .post('http://10.0.2.2:8080/api/user/create', userToSend)
           .then(() => {
-            userToSend.isAdmin = false;
-            userToSend.password = undefined;
-            setUser(userToSend);
+            navigation.goBack();
           })
           .catch((err) => {
             const httpError = err.message.split(' ')[5];

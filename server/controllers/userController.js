@@ -39,35 +39,18 @@ const register = async (req, res) => {
     });
 };
 
-const createTokens = (dataToEncrypt) => {
-  try {
-    const accessToken = jwt.sign(dataToEncrypt, process.env.ACCESS_TOKEN, {
-      expiresIn: '15m',
-    });
-    const refreshToken = jwt.sign(dataToEncrypt, process.env.REFRESH_TOKEN, {
-      expiresIn: '7d',
-    });
-    return { accessToken, refreshToken };
-  } catch (err) {
-    console.log(err);
-    return;
-  }
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
   const userData = await User.findOne({ email: email }, null, { lean: true });
   if (!userData) return res.status(404).json({ error: "User doesn't exists" });
   const isUserPasswordCorrect = bcrypt.compareSync(password, userData.password);
-  console.log(password);
-  console.log(isUserPasswordCorrect);
   if (!isUserPasswordCorrect)
     return res.status(403).json({ error: 'Incorrect password' });
   const dataToSend = { ...userData };
   dataToSend.password = undefined;
-  dataToSend._id = undefined;
   dataToSend.__v = undefined;
-  res.send([dataToSend, createTokens(dataToSend)]);
+  const token = jwt.sign(dataToSend, process.env.ACCESS_TOKEN);
+  res.send([dataToSend._id, dataToSend.isAdmin, token]);
 };
 
 function validateToken(req, res, next) {

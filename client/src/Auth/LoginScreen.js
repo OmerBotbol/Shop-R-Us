@@ -10,14 +10,14 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [message, setMessage] = useState();
-  const { setUser } = useContext(myUserContext);
+  const { login } = useContext(myUserContext);
 
   const handleLogin = () => {
     axios
       .post('http://10.0.2.2:8080/api/user/login', { password, email })
       .then((result) => {
         setMessage('');
-        setUser(result.data[0]);
+        login(result.data);
       })
       .catch((err) => {
         err.message.split(' ')[5] === '404'
