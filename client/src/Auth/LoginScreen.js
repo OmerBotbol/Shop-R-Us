@@ -50,7 +50,7 @@ function LoginScreen({ navigation }) {
           <View style={styles.buttonsContainer}>
             <CustomButton
               containerStyle={styles.button}
-              onPress={() => navigation.navigate('register')}
+              onPress={() => navigation.navigate('Register')}
             >
               register
             </CustomButton>

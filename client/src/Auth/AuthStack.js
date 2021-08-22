@@ -13,7 +13,7 @@ function AuthStack() {
         name="login"
         component={LoginScreen}
       />
-      <Stack.Screen name="register" component={RegisterScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
   );
 }
