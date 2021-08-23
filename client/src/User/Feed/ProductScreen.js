@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
 import { myUserContext } from '../../General/UserContext';
+import LoadingScreen from '../../General/LoadingScreen';
 
 function ProductScreen({ route }) {
   const [itemData, setItemData] = useState({});
@@ -32,29 +33,29 @@ function ProductScreen({ route }) {
       });
   }, []);
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <View style={styles.productData}>
-          <Text style={styles.header}>{itemData.name}</Text>
-          <Image source={{ uri: itemData.imageUrl }} style={styles.image} />
-          <Text style={styles.description}>{itemData.description}</Text>
-          <View style={styles.numberOfItems}>
-            <TouchableOpacity
-              onPress={() => quantity > 1 && setQuantity((prev) => prev - 1)}
-            >
-              <Text style={styles.changeButton}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.quantity}>{quantity}</Text>
-            <TouchableOpacity onPress={() => setQuantity((prev) => prev + 1)}>
-              <Text style={styles.changeButton}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.price}>Price: {itemData.price * quantity}$</Text>
+      <View style={styles.productData}>
+        <Text style={styles.header}>{itemData.name}</Text>
+        <Image source={{ uri: itemData.imageUrl }} style={styles.image} />
+        <Text style={styles.description}>{itemData.description}</Text>
+        <View style={styles.numberOfItems}>
+          <TouchableOpacity
+            onPress={() => quantity > 1 && setQuantity((prev) => prev - 1)}
+          >
+            <Text style={styles.changeButton}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.quantity}>{quantity}</Text>
+          <TouchableOpacity onPress={() => setQuantity((prev) => prev + 1)}>
+            <Text style={styles.changeButton}>+</Text>
+          </TouchableOpacity>
         </View>
-      )}
+        <Text style={styles.price}>Price: {itemData.price * quantity}$</Text>
+      </View>
     </SafeAreaView>
   );
 }

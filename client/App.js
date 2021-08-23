@@ -5,7 +5,7 @@ import UserTabs from './src/User/UserTabs';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { View, ActivityIndicator } from 'react-native';
+import LoadingScreen from './src/General/LoadingScreen';
 
 export default function App() {
   const initialLoginState = {
@@ -38,8 +38,27 @@ export default function App() {
 
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
-  const authContext = () => {
-    return;
+  const authContext = {
+    login: async (userData) => {
+      const id = userData[0];
+      const admin = userData[1];
+      const token = userData[2];
+      try {
+        await AsyncStorage.setItem('accessToken', token);
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: 'LOGIN', id, admin, token });
+    },
+    logout: async () => {
+      try {
+        await AsyncStorage.removeItem('accessToken');
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: 'LOGOUT' });
+    },
+    user: loginState,
   };
 
   useEffect(() => {
@@ -68,37 +87,10 @@ export default function App() {
   }, []);
 
   if (loginState.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+    return <LoadingScreen />;
   }
   return (
-    <myUserContext.Provider
-      value={{
-        login: async (userData) => {
-          const id = userData[0];
-          const admin = userData[1];
-          const token = userData[2];
-          try {
-            await AsyncStorage.setItem('accessToken', token);
-          } catch (e) {
-            console.log(e);
-          }
-          dispatch({ type: 'LOGIN', id, admin, token });
-        },
-        logout: async () => {
-          try {
-            await AsyncStorage.removeItem('accessToken');
-          } catch (e) {
-            console.log(e);
-          }
-          dispatch({ type: 'LOGOUT' });
-        },
-        user: loginState,
-      }}
-    >
+    <myUserContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken ? <UserTabs /> : <AuthStack />}
       </NavigationContainer>
