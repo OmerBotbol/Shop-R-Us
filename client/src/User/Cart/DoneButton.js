@@ -12,7 +12,6 @@ function DoneButton(navigation) {
       return initial + item.price;
     }, 0);
     const dataToSend = { items: cart, totalPrice, userId: user.userId };
-    console.log(dataToSend);
     axios
       .post('http://10.0.2.2:8080/api/order', dataToSend)
       .then(() => {

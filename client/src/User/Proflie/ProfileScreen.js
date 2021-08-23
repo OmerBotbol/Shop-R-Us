@@ -12,7 +12,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 
-function ProfileScreen() {
+function ProfileScreen({ navigation }) {
   const [userData, setUserData] = useState('');
   const { logout, user } = useContext(myUserContext);
   const [loading, setLoading] = useState(true);
@@ -58,7 +58,13 @@ function ProfileScreen() {
       </View>
       <Text>Hi, {`${userData.firstName} ${userData.lastName}`}</Text>
       <ScrollView style={styles.optionsContainer}>
-        <ListItem image="shopping-bag" Component={Feather}>
+        <ListItem
+          onPress={() =>
+            navigation.navigate('My Orders', { userId: user.userId })
+          }
+          image="shopping-bag"
+          Component={Feather}
+        >
           My Orders
         </ListItem>
         <ListItem
