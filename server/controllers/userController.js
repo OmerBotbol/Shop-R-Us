@@ -39,6 +39,25 @@ const register = async (req, res) => {
     });
 };
 
+const updateUser = (req, res) => {
+  const { id } = req.params;
+  if (id !== req.data._id) {
+    return res
+      .status(403)
+      .send({ msg: 'only the user can update his own details' });
+  }
+  User.findByIdAndUpdate(id, req.body, { new: true, rawResult: true })
+    .then((data) => {
+      if (!data) {
+        return res.status(404).send({ msg: 'failed to find this ID' });
+      }
+      res.send({ status: 'user updated successfully' });
+    })
+    .catch((err) => {
+      res.status(400).send('error occur: ' + err.message);
+    });
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   const userData = await User.findOne({ email: email }, null, { lean: true });
@@ -77,4 +96,4 @@ function validateToken(req, res, next) {
   });
 }
 
-module.exports = { register, login, validateToken, getUserById };
+module.exports = { register, login, validateToken, getUserById, updateUser };

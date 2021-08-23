@@ -52,8 +52,8 @@ function ProfileScreen({ navigation }) {
       <View style={styles.topSquare}></View>
       <View style={styles.userCircle}>
         <Text style={styles.userCircleText}>
-          {userData.firstName[0]}
-          {userData.lastName[0]}
+          {userData.firstName[0].toUpperCase()}
+          {userData.lastName[0].toUpperCase()}
         </Text>
       </View>
       <Text>Hi, {`${userData.firstName} ${userData.lastName}`}</Text>
