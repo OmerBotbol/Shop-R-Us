@@ -12,7 +12,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 
-function ProfileScreen({ navigation }) {
+function ProfileScreen({ navigation, route }) {
   const [userData, setUserData] = useState('');
   const { logout, user } = useContext(myUserContext);
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ function ProfileScreen({ navigation }) {
 
   useEffect(() => {
     if (user.userId) {
+      setLoading(true);
       axios
         .get(`http://10.0.2.2:8080/api/user/?id=${user.userId}`, {
           headers: {
@@ -37,7 +38,7 @@ function ProfileScreen({ navigation }) {
           setLoading(false);
         });
     }
-  }, []);
+  }, [user, route.params]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -68,6 +69,7 @@ function ProfileScreen({ navigation }) {
           My Orders
         </ListItem>
         <ListItem
+          onPress={() => navigation.navigate('My Details', { user: userData })}
           image="card-account-details-outline"
           Component={MaterialCommunityIcons}
         >

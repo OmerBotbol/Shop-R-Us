@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import MyDetailsScreen from './MyDetailsScreen';
 import MyOrdersScreen from './MyOrdersScreen';
 import ProfileScreen from './ProfileScreen';
 
@@ -14,6 +15,7 @@ function ProfileStack() {
         component={ProfileScreen}
       />
       <Stack.Screen name="My Orders" component={MyOrdersScreen} />
+      <Stack.Screen name="My Details" component={MyDetailsScreen} />
     </Stack.Navigator>
   );
 }

@@ -46,6 +46,11 @@ const updateUser = (req, res) => {
       .status(403)
       .send({ msg: 'only the user can update his own details' });
   }
+  if (Object.keys(req.body).includes('isAdmin')) {
+    return res.status(403).send({ msg: 'you are not authorize to do this' });
+  }
+
+  console.log(req.body);
   User.findByIdAndUpdate(id, req.body, { new: true, rawResult: true })
     .then((data) => {
       if (!data) {
@@ -54,6 +59,7 @@ const updateUser = (req, res) => {
       res.send({ status: 'user updated successfully' });
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).send('error occur: ' + err.message);
     });
 };

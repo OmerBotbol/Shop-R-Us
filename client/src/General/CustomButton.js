@@ -2,11 +2,22 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors } from './colors';
 
-function CustomButton({ children, onPress, textStyle, containerStyle }) {
+function CustomButton({
+  children,
+  onPress,
+  textStyle,
+  containerStyle,
+  disabled = false,
+}) {
   return (
     <TouchableOpacity
-      style={{ ...styles.container, ...containerStyle }}
+      style={{
+        ...styles.container,
+        backgroundColor: disabled ? colors.lightBlue : colors.darkBlue,
+        ...containerStyle,
+      }}
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={{ ...styles.text, ...textStyle }}>{children}</Text>
     </TouchableOpacity>
@@ -15,7 +26,6 @@ function CustomButton({ children, onPress, textStyle, containerStyle }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.darkBlue,
     elevation: 8,
     alignItems: 'center',
     justifyContent: 'center',
