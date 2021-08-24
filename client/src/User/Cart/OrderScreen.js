@@ -8,12 +8,12 @@ import axios from 'axios';
 
 function OrderScreen() {
   const { cart } = useContext(myCartContext);
-  const { user } = useContext(myUserContext);
+  const { user, ipAddress } = useContext(myUserContext);
   const [userData, setUserData] = useState();
 
   useEffect(() => {
     axios
-      .get(`http://10.0.2.2:8080/api/user/?id=${user.userId}`, {
+      .get(`http://${ipAddress}:8080/api/user/?id=${user.userId}`, {
         headers: {
           authorization: 'Bearer ' + user.userToken,
         },

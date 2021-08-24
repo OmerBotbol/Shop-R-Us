@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import AuthStack from './src/Auth/AuthStack';
 import { myUserContext } from './src/General/UserContext';
 import UserTabs from './src/User/UserTabs';
@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import LoadingScreen from './src/General/LoadingScreen';
+// import { IP_ADDRESS } from 'react-native-dotenv';
 
 export default function App() {
   const initialLoginState = {
@@ -59,6 +60,7 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     user: loginState,
+    ipAddress: process.env.IP_ADDRESS || '10.0.2.2',
   };
 
   useEffect(() => {
@@ -67,11 +69,14 @@ export default function App() {
         const userToken = await AsyncStorage.getItem('accessToken');
         let userData = { data: { id: null, admin: null } };
         if (userToken) {
-          userData = await axios.get('http://10.0.2.2:8080/api/user/data', {
-            headers: {
-              authorization: 'Bearer ' + userToken,
-            },
-          });
+          userData = await axios.get(
+            `http://${authContext.ipAddress}:8080/api/user/data`,
+            {
+              headers: {
+                authorization: 'Bearer ' + userToken,
+              },
+            }
+          );
         }
         dispatch({
           type: 'LOGIN',

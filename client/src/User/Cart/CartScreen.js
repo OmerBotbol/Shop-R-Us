@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../General/CustomButton';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
-import { myUserContext } from '../../General/UserContext';
 
 function CartScreen({ navigation }) {
   const { cart, deleteOne } = useContext(myCartContext);

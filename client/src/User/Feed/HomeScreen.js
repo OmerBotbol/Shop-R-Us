@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import {
   SafeAreaView,
@@ -14,14 +14,16 @@ import {
 import { colors } from '../../General/colors';
 import CustomButton from '../../General/CustomButton';
 import DismissKeyboard from '../../General/DismissKeyboard';
+import { myUserContext } from '../../General/UserContext';
 
 function HomeScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState('');
   const [items, setItems] = useState([]);
+  const { ipAddress } = useContext(myUserContext);
 
   const handlePress = () => {
     axios
-      .get(`http://10.0.2.2:8080/api/item?key=name&value=${searchInput}`)
+      .get(`http://${ipAddress}:8080/api/item?key=name&value=${searchInput}`)
       .then((result) => {
         setItems(result.data);
         Keyboard.dismiss();

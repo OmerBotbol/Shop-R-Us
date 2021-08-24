@@ -14,7 +14,7 @@ import {
 
 function ProfileScreen({ navigation, route }) {
   const [userData, setUserData] = useState('');
-  const { logout, user } = useContext(myUserContext);
+  const { logout, user, ipAddress } = useContext(myUserContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -22,7 +22,7 @@ function ProfileScreen({ navigation, route }) {
     if (user.userId) {
       setLoading(true);
       axios
-        .get(`http://10.0.2.2:8080/api/user/?id=${user.userId}`, {
+        .get(`http://${ipAddress}:8080/api/user/?id=${user.userId}`, {
           headers: {
             authorization: 'Bearer ' + user.userToken,
           },

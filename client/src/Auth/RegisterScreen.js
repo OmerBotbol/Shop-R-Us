@@ -1,10 +1,11 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors } from '../General/colors';
 import CustomButton from '../General/CustomButton';
 import DismissKeyboard from '../General/DismissKeyboard';
 import { EvilIcons } from '@expo/vector-icons';
+import { myUserContext } from '../General/UserContext';
 
 function RegisterScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -19,6 +20,7 @@ function RegisterScreen({ navigation }) {
   const [message, setMessage] = useState('');
   const [valid, setValid] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState('');
+  const { ipAddress } = useContext(myUserContext);
 
   useEffect(() => {
     const reg = '[a-zA-Z0-9]$';
@@ -47,7 +49,7 @@ function RegisterScreen({ navigation }) {
     if (Object.values(userToSend).every((item) => item)) {
       if (valid && confirmPassword === password) {
         axios
-          .post('http://10.0.2.2:8080/api/user/create', userToSend)
+          .post(`http://${ipAddress}:8080/api/user/create`, userToSend)
           .then(() => {
             navigation.goBack();
           })

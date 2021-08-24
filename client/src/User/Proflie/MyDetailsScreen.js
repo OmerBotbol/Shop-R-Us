@@ -15,7 +15,7 @@ import axios from 'axios';
 import { myUserContext } from '../../General/UserContext';
 
 function MyDetailsScreen({ route, navigation }) {
-  const { user } = useContext(myUserContext);
+  const { user, ipAddress } = useContext(myUserContext);
   const [firstName, setFirstName] = useState([
     route.params.user.firstName,
     false,
@@ -86,7 +86,7 @@ function MyDetailsScreen({ route, navigation }) {
       return filtered;
     }, {});
     axios
-      .put(`http://10.0.2.2:8080/api/user/${user.userId}`, changedValues, {
+      .put(`http://${ipAddress}:8080/api/user/${user.userId}`, changedValues, {
         headers: {
           authorization: 'Bearer ' + user.userToken,
         },

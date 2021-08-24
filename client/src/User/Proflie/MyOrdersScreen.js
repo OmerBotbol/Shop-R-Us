@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FlatList,
   Text,
@@ -11,14 +11,16 @@ import {
 import { colors } from '../../General/colors';
 import ErrorScreen from '../../General/ErrorScreen';
 import LoadingScreen from '../../General/LoadingScreen';
+import { myUserContext } from '../../General/UserContext';
 
 function MyOrdersScreen({ route }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { ipAddress } = useContext(myUserContext);
 
   useEffect(() => {
     axios
-      .get(`http://10.0.2.2:8080/api/order?userId=${route.params.userId}`)
+      .get(`http://${ipAddress}:8080/api/order?userId=${route.params.userId}`)
       .then((result) => {
         setOrders(result.data);
       })

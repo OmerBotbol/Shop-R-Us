@@ -10,11 +10,11 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [message, setMessage] = useState();
-  const { login } = useContext(myUserContext);
+  const { login, ipAddress } = useContext(myUserContext);
 
   const handleLogin = () => {
     axios
-      .post('http://10.0.2.2:8080/api/user/login', { password, email })
+      .post(`http://${ipAddress}:8080/api/user/login`, { password, email })
       .then((result) => {
         setMessage('');
         login(result.data);

@@ -5,14 +5,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
 import LoadingScreen from '../../General/LoadingScreen';
+import { myUserContext } from '../../General/UserContext';
 
 function ProductScreen({ route }) {
   const [itemData, setItemData] = useState({});
   const [loading, setLoading] = useState(true);
   const { quantity, setQuantity } = useContext(myCartContext);
+  const { ipAddress } = useContext(myUserContext);
   useEffect(() => {
     axios
-      .get(`http://10.0.2.2:8080/api/item?key=id&value=${route.params.id}`)
+      .get(`http://${ipAddress}:8080/api/item?key=id&value=${route.params.id}`)
       .then((result) => {
         setItemData(result.data[0]);
         setQuantity(1);
