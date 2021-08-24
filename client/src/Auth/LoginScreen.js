@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
+import { ScrollView } from 'react-native';
 import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors } from '../General/colors';
 import CustomButton from '../General/CustomButton';
@@ -7,14 +8,20 @@ import DismissKeyboard from '../General/DismissKeyboard';
 import { myUserContext } from '../General/UserContext';
 
 function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [message, setMessage] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   const { login, ipAddress } = useContext(myUserContext);
 
   const handleLogin = () => {
+    if (!email || !password) {
+      return setMessage('Fill email AND password');
+    }
     axios
-      .post(`http://${ipAddress}:8080/api/user/login`, { password, email })
+      .post(`http://${ipAddress}:8080/api/user/login`, {
+        password,
+        email: email.toLowerCase(),
+      })
       .then((result) => {
         setMessage('');
         login(result.data);
@@ -28,7 +35,14 @@ function LoginScreen({ navigation }) {
 
   return (
     <DismissKeyboard>
-      <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Text style={styles.pageTitle}>Shop R Us</Text>
         <View style={styles.loginBox}>
           <Text style={styles.loginTitle}>Login</Text>
@@ -63,16 +77,13 @@ function LoginScreen({ navigation }) {
           </View>
         </View>
         <Text style={styles.message}>{message}</Text>
-      </SafeAreaView>
+      </ScrollView>
     </DismissKeyboard>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.beige,
     position: 'relative',
   },
@@ -88,8 +99,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 20,
     backgroundColor: 'white',
-    width: 300,
-    height: 300,
+    width: '90%',
+    height: '40%',
+    minHeight: 300,
     position: 'relative',
     borderRadius: 20,
     alignItems: 'center',

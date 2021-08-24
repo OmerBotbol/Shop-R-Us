@@ -32,8 +32,10 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 10,
+    width: '100%',
     color: 'white',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
 });
 

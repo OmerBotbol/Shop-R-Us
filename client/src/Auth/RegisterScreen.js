@@ -39,7 +39,7 @@ function RegisterScreen({ navigation }) {
     const userToSend = {
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       password,
       country,
       city,
