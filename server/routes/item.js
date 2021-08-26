@@ -5,11 +5,14 @@ const {
   postItem,
   updateItem,
   deleteItem,
+  getAllTags,
 } = require('../controllers/itemsController');
 
 item.use(express.json());
 
 item.get('/', getItems);
+
+item.get('/tags', getAllTags);
 
 item.post('/', postItem);
 

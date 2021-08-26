@@ -60,7 +60,9 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     user: loginState,
-    ipAddress: process.env.IP_ADDRESS || '10.0.2.2',
+    // ipAddress: process.env.IP_ADDRESS,
+    // ipAddress: '10.0.0.2',
+    ipAddress: '192.168.0.24',
   };
 
   useEffect(() => {

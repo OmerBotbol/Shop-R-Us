@@ -1,8 +1,10 @@
 const { Item } = require('../mongo/schema');
+const _ = require('lodash');
 
 const postItem = (req, res) => {
   const newItem = new Item({
     name: req.body.name,
+    tags: req.body.tags,
     imageUrl: req.body.imageUrl,
     description: req.body.description,
     price: req.body.price,
@@ -26,7 +28,10 @@ const getItems = (req, res) => {
   if (!optionalKeys.some((optionalKey) => optionalKey === key))
     return res.status(400).send('invalid key');
   if (key === optionalKeys[0])
-    searchQuery.name = { $regex: value, $options: 'i' };
+    searchQuery.$or = [
+      { name: { $regex: value, $options: 'i' } },
+      { tags: { $regex: value, $options: 'i' } },
+    ];
   if (key === optionalKeys[1]) {
     if (!value.match(/^[0-9a-fA-F]{24}$/))
       return res.status(400).send('invalid ID');
@@ -42,6 +47,19 @@ const getItems = (req, res) => {
     .catch((err) => {
       res.status(500).send('error occur: ' + err.message);
     });
+};
+
+const getAllTags = async (req, res) => {
+  const allItems = await Item.find({});
+  const allTags = allItems.reduce((filtered, item) => {
+    item.tags.forEach((tag) => {
+      if (!filtered.some((option) => option.tag === tag)) {
+        filtered.push({ tag, imageUrl: item.imageUrl });
+      }
+    });
+    return filtered;
+  }, []);
+  res.send(_.sampleSize(allTags, 5));
 };
 
 const updateItem = (req, res) => {
@@ -72,4 +90,4 @@ const deleteItem = (req, res) => {
     });
 };
 
-module.exports = { postItem, getItems, updateItem, deleteItem };
+module.exports = { postItem, getItems, updateItem, deleteItem, getAllTags };

@@ -1,37 +1,46 @@
-import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+
 import {
+  FlatList,
+  Image,
   SafeAreaView,
   StyleSheet,
-  TextInput,
-  View,
   Text,
-  FlatList,
+  TextInput,
   TouchableOpacity,
-  Keyboard,
+  View,
 } from 'react-native';
 
 import { colors } from '../../General/colors';
 import CustomButton from '../../General/CustomButton';
 import DismissKeyboard from '../../General/DismissKeyboard';
+import LoadingScreen from '../../General/LoadingScreen';
 import { myUserContext } from '../../General/UserContext';
 
 function HomeScreen({ navigation }) {
   const [searchInput, setSearchInput] = useState('');
-  const [items, setItems] = useState([]);
+  const [tags, setTags] = useState('');
+  const [loading, setLoading] = useState(true);
   const { ipAddress } = useContext(myUserContext);
 
-  const handlePress = () => {
+  useEffect(() => {
     axios
-      .get(`http://${ipAddress}:8080/api/item?key=name&value=${searchInput}`)
+      .get(`http://${ipAddress}:8080/api/item/tags`)
       .then((result) => {
-        setItems(result.data);
-        Keyboard.dismiss();
+        setTags(result.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  };
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,22 +53,31 @@ function HomeScreen({ navigation }) {
             placeholder="I'm looking for..."
           />
         </DismissKeyboard>
-        <CustomButton onPress={() => handlePress()}>search</CustomButton>
+        <CustomButton
+          onPress={() => navigation.navigate('List', { searchInput })}
+        >
+          search
+        </CustomButton>
       </View>
       <FlatList
-        data={items}
-        style={styles.itemList}
+        data={tags}
+        style={styles.tagList}
+        // contentContainerStyle={{ alignItems: 'center' }}
         keyExtractor={(item, idx) => item + idx}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('product', {
-                id: item._id,
-                name: item.name,
-              })
+              navigation.navigate('List', { searchInput: item.tag })
             }
           >
-            <Text style={styles.item}>{item.name}</Text>
+            <View style={styles.tagContainer}>
+              <Image
+                source={{ uri: item.imageUrl }}
+                borderRadius={50}
+                style={styles.tagImage}
+              />
+              <Text style={styles.tagName}>{item.tag}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -93,22 +111,33 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: 'white',
   },
-  item: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    textAlign: 'center',
-    borderWidth: 1,
-    fontSize: 30,
-    margin: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: colors.lightBlue,
-  },
 
-  itemList: {
-    flex: 1,
+  tagList: {
     marginTop: 120,
     width: '100%',
+  },
+  tagContainer: {
+    width: '95%',
+    borderWidth: 1,
+    marginLeft: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 10,
+    backgroundColor: colors.lightBlue,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  tagImage: {
+    width: 50,
+    height: 50,
+  },
+
+  tagName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10,
   },
 });
 

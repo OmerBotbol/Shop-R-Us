@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import ProductScreen from './ProductScreen';
 import AddButton from './AddButton';
+import ItemsScreen from './ItemsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,11 @@ function HomeStack() {
         options={{ headerShown: false }}
         name="home"
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="List"
+        options={({ route }) => ({ headerTitle: route.params.searchInput })}
+        component={ItemsScreen}
       />
       <Stack.Screen
         name="product"
