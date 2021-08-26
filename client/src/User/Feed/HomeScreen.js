@@ -54,7 +54,9 @@ function HomeScreen({ navigation }) {
           />
         </DismissKeyboard>
         <CustomButton
-          onPress={() => navigation.navigate('List', { searchInput })}
+          onPress={() =>
+            searchInput && navigation.navigate('List', { searchInput })
+          }
         >
           search
         </CustomButton>
@@ -62,7 +64,6 @@ function HomeScreen({ navigation }) {
       <FlatList
         data={tags}
         style={styles.tagList}
-        // contentContainerStyle={{ alignItems: 'center' }}
         keyExtractor={(item, idx) => item + idx}
         renderItem={({ item }) => (
           <TouchableOpacity

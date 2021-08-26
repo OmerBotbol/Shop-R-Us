@@ -4,9 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../General/CustomButton';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
+import { myUserContext } from '../../General/UserContext';
+import axios from 'axios';
 
 function CartScreen({ navigation }) {
-  const { cart, deleteOne } = useContext(myCartContext);
+  const { cart, deleteOne, deleteAll } = useContext(myCartContext);
+  const { user, ipAddress } = useContext(myUserContext);
   const [cartDisplay, setCartDisplay] = useState([]);
 
   useEffect(() => {
@@ -35,7 +38,23 @@ function CartScreen({ navigation }) {
     if (cart.length === 0) {
       return Alert.alert('Oops!', 'Your cart is empty!', ['ok']);
     }
-    navigation.navigate('My Order');
+    const totalPrice = cart.reduce((initial, item) => {
+      return initial + item.price;
+    }, 0);
+    const dataToSend = { items: cart, totalPrice, userId: user.userId };
+    axios
+      .post(`http://${ipAddress}:8080/api/order`, dataToSend)
+      .then(() => {
+        deleteAll();
+        Alert.alert(
+          'Your Order Has Received!',
+          'You will get your reservation up to 14 business days',
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -90,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   cartList: {
-    marginTop: 20,
+    marginTop: 50,
     flexDirection: 'column',
     height: 300,
   },
@@ -118,6 +137,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: 'absolute',
     right: 0,
+    top: 50,
     margin: 10,
     padding: 5,
     backgroundColor: colors.lightGray,

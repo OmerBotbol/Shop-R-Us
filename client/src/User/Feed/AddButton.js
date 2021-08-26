@@ -26,8 +26,8 @@ function AddButton(id, navigation) {
       'Added successfully',
       `you added ${quantity} ${item.name} to your cart`,
       [
-        { text: 'go homepage', onPress: () => navigation.goBack() },
         { text: 'go cart', onPress: () => navigation.navigate('Cart') },
+        { text: 'continue' },
       ]
     );
   };

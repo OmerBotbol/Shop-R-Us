@@ -1,13 +1,20 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { myCartContext } from '../CartContext';
 import { colors } from '../../General/colors';
 import LoadingScreen from '../../General/LoadingScreen';
 import { myUserContext } from '../../General/UserContext';
 
-function ProductScreen({ route }) {
+function ProductScreen({ navigation, route }) {
   const [itemData, setItemData] = useState({});
   const [loading, setLoading] = useState(true);
   const { quantity, setQuantity } = useContext(myCartContext);
@@ -46,8 +53,26 @@ function ProductScreen({ route }) {
             <Text style={styles.changeButton}>+</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.price}>Price: {itemData.price * quantity}$</Text>
       </View>
+      <FlatList
+        data={itemData.tags}
+        contentContainerStyle={{
+          flex: 1,
+          flexDirection: 'row',
+          position: 'absolute',
+          bottom: 80,
+          left: 20,
+        }}
+        keyExtractor={(item, idx) => item + idx}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('List', { searchInput: item })}
+          >
+            <Text style={styles.tag}>{item}</Text>
+          </TouchableOpacity>
+        )}
+      />
+      <Text style={styles.price}>Price: {itemData.price * quantity}$</Text>
     </SafeAreaView>
   );
 }
@@ -55,6 +80,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.beige,
     flex: 1,
+    height: '100%',
   },
   productData: {
     flex: 2,
@@ -73,10 +99,14 @@ const styles = StyleSheet.create({
   description: {
     padding: 10,
     fontSize: 20,
+    textAlign: 'center',
+    maxHeight: 100,
+    width: '90%',
   },
   numberOfItems: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   quantity: {
     width: 30,
@@ -104,6 +134,18 @@ const styles = StyleSheet.create({
     fontSize: 25,
     width: '100%',
     paddingLeft: 10,
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+  },
+  tag: {
+    borderWidth: 1,
+    borderColor: colors.darkGray,
+    borderRadius: 20,
+    padding: 5,
+    color: 'white',
+    backgroundColor: colors.lightGray,
+    margin: 3,
   },
 });
 
