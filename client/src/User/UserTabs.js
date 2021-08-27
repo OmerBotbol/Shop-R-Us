@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStack from './Feed/HomeStack';
 import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../General/colors';
-import ProfileStack from './Proflie/ProfileStack';
+import ProfileStack from './Profile/ProfileStack';
 import CartScreen from './Cart/CartScreen';
 
 const Tab = createBottomTabNavigator();

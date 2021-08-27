@@ -34,25 +34,27 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <DismissKeyboard>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text style={styles.pageTitle}>Shop R Us</Text>
-        <View style={styles.loginBox}>
-          <Text style={styles.loginTitle}>Login</Text>
-          <View style={styles.inputContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Text style={styles.pageTitle}>Shop R Us</Text>
+      <View style={styles.loginBox}>
+        <Text style={styles.loginTitle}>Login</Text>
+        <View style={styles.inputContainer}>
+          <DismissKeyboard>
             <TextInput
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
               style={styles.input}
             />
+          </DismissKeyboard>
+          <DismissKeyboard>
             <TextInput
               value={password}
               onChangeText={setPassword}
@@ -60,25 +62,25 @@ function LoginScreen({ navigation }) {
               style={styles.input}
               secureTextEntry={true}
             />
-          </View>
-          <View style={styles.buttonsContainer}>
-            <CustomButton
-              containerStyle={styles.button}
-              onPress={() => navigation.navigate('Register')}
-            >
-              register
-            </CustomButton>
-            <CustomButton
-              containerStyle={styles.button}
-              onPress={() => handleLogin()}
-            >
-              login
-            </CustomButton>
-          </View>
+          </DismissKeyboard>
         </View>
-        <Text style={styles.message}>{message}</Text>
-      </ScrollView>
-    </DismissKeyboard>
+        <View style={styles.buttonsContainer}>
+          <CustomButton
+            containerStyle={styles.button}
+            onPress={() => navigation.navigate('Register')}
+          >
+            register
+          </CustomButton>
+          <CustomButton
+            containerStyle={styles.button}
+            onPress={() => handleLogin()}
+          >
+            login
+          </CustomButton>
+        </View>
+      </View>
+      <Text style={styles.message}>{message}</Text>
+    </ScrollView>
   );
 }
 

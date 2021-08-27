@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import LoadingScreen from './src/General/LoadingScreen';
+import AdminTabs from './src/Admin/AdminTabs';
 // import { IP_ADDRESS } from 'react-native-dotenv';
 
 export default function App() {
@@ -60,9 +61,8 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     user: loginState,
-    // ipAddress: process.env.IP_ADDRESS,
-    // ipAddress: '10.0.0.2',
-    ipAddress: '192.168.0.24',
+    ipAddress: process.env.IP_ADDRESS,
+    // ipAddress: '192.168.0.24',
   };
 
   useEffect(() => {
@@ -99,7 +99,13 @@ export default function App() {
   return (
     <myUserContext.Provider value={authContext}>
       <NavigationContainer>
-        {loginState.userToken ? <UserTabs /> : <AuthStack />}
+        {!loginState.userToken ? (
+          <AuthStack />
+        ) : loginState.isAdmin ? (
+          <AdminTabs />
+        ) : (
+          <UserTabs />
+        )}
       </NavigationContainer>
     </myUserContext.Provider>
   );
